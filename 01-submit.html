@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+	<title>Submitting jobs to HPC systems</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body class="lesson">
+    <div class="container card">
+      <div class="banner">
+        <a href="http://it.wvu.edu/research/research-computing" title="Research 
+        Computing">
+      	<img alt="Research Computing banner" src="img/ResearchComputing.png" />
+        </a>
+      </div>
+      <article>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+                    <a href="index.html"><h1 class="title">Submitting jobs to HPC systems</h1></a>
+          <h2 class="subtitle">Submit your first job</h2>
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Learn to write a submit script</li>
+<li>Learn to submit, check, and cancel jobs</li>
+<li>Learn to add PBS directives to control jobs behavior</li>
+</ul>
+</div>
+</section>
+<p>Download our intial submit script</p>
+<p><a href="https://wvuhpc.github.com/submitjobs-hpc/script-data.tar.gz">Download</a></p>
+<p>Copy data to cluster</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">scp</span> script-data.tar.gz spruce.hpc.wvu.edu:.</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ssh</span> spruce.hpc.wvu.edu
+$ <span class="kw">tar</span> xzvf script-data.tar.gz
+$ <span class="kw">cd</span> script-data</code></pre></div>
+<p>We want to submit the do-stats.sh script to the system. We write a second script that tells the scheduler what to do:</p>
+<ol style="list-style-type: decimal">
+<li>Change to the script-data directory</li>
+<li>Execute the do-stats.sh script</li>
+</ol>
+<pre><code>cd $HOME/script-data
+bash do-stats.sh</code></pre>
+<p>Let’s call this script <code>submit-stats.sh</code>. Notice that these two commands would be exactly how you would execute the script normally. Now submit the job.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qsub</span> submit-stats.sh</code></pre></div>
+<pre class="output"><code>546324.srih001.hpc.wvu.edu</code></pre>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="your-jobid-will-differ"><span class="glyphicon glyphicon-pushpin"></span>Your jobID will differ</h2>
+</div>
+<div class="panel-body">
+<p>Every job gets a unique jobID….</p>
+</div>
+</aside>
+<p>You can see a list of all your running jobs using <code>showq</code>.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">showq</span> -u training01</code></pre></div>
+<pre class="output"><code>active jobs------------------------
+JOBID              USERNAME      STATE PROCS   REMAINING            STARTTIME
+
+546324             training01  Running     1     1:59:02  Fri Jun 10 15:19:21
+
+1 active job              1 of 384 processors in use by local jobs (0.26%)
+                          21 of 32 nodes active      (65.62%)
+
+eligible jobs----------------------
+JOBID              USERNAME      STATE PROCS     WCLIMIT            QUEUETIME
+
+
+0 eligible jobs   
+
+blocked jobs-----------------------
+JOBID              USERNAME      STATE PROCS     WCLIMIT            QUEUETIME
+
+
+0 blocked jobs   
+
+Total job:  1</code></pre>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2 id="username-difference"><span class="glyphicon glyphicon-pushpin"></span>username difference</h2>
+</div>
+<div class="panel-body">
+<p>Here we use training01..</p>
+</div>
+</aside>
+<p>After a few minutes. Two new files will appear in the script-data directory.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ls</span></code></pre></div>
+<pre class="output"><code>do-stats.sh     NENE01812A.txt  NENE02040B.txt        stats-NENE01751B.txt  stats-NENE02040B.txt
+goodiff         NENE01843A.txt  NENE02040Z.txt        stats-NENE01812A.txt  stats-NENE02043A.txt
+goostats        NENE01843B.txt  NENE02043A.txt        stats-NENE01843A.txt  stats-NENE02043B.txt
+NENE01729A.txt  NENE01971Z.txt  NENE02043B.txt        stats-NENE01843B.txt  submit-stats.sh
+NENE01729B.txt  NENE01978A.txt  stats-NENE01729A.txt  stats-NENE01978A.txt  submit-stats.sh.e546324
+NENE01736A.txt  NENE01978B.txt  stats-NENE01729B.txt  stats-NENE01978B.txt  submit-stats.sh.o546324
+NENE01751A.txt  NENE02018B.txt  stats-NENE01736A.txt  stats-NENE02018B.txt
+NENE01751B.txt  NENE02040A.txt  stats-NENE01751A.txt  stats-NENE02040A.txt
+</code></pre>
+<p>Check our output</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> submit-stats.sh.o546324</code></pre></div>
+<pre class="output"><code>...
+NENE01729A.txt
+NENE01729B.txt
+NENE01736A.txt
+...</code></pre>
+<p>The ‘e’ file is for errors. The ‘o’ file is for regular output.</p>
+<p>We need to include canceling a job.</p>
+<h3 id="checkjob">Checkjob</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">checkjob</span> 546324</code></pre></div>
+<pre class="output"><code>job 546324
+
+AName: submit-stats.sh
+State: Completed Completion Code: 0  Time: Fri Jun 10 15:35:08
+Creds:  user:training01  group:trainingc  class:batch  qos:community
+WallTime:   00:01:31 of 2:00:00
+SubmitTime: Fri Jun 10 15:33:04
+  (Time Queued  Total: 00:00:33  Eligible: 00:00:33)
+
+TemplateSets:  DEFAULT
+Total Requested Tasks: 1
+
+Req[0]  TaskCount: 1  Partition: torque
+Dedicated Resources Per Task: PROCS: 1  SWAP: 4096M
+
+Allocated Nodes:
+[compute-01-25:1]
+
+
+SystemID:   Moab
+SystemJID:  546324
+Notification Events: JobFail  Notification Address: training01@theacademy.com
+
+StartCount:     1
+Execution Partition:  torque
+Flags:          RESTARTABLE
+Attr:           checkpoint
+StartPriority:  100000</code></pre>
+<h3 id="controlling-some-job-behavior">Controlling some job behavior</h3>
+<p>The qsub command has a large number of options that can be given to it to control the behavior of the job. For instance <code>-N</code> changes the jobName, and subsequently the names of the output files.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qsub</span> -N north-stats submit-stats.sh</code></pre></div>
+<p>You will now notice that the output files are named north-stats.o546325 and north-stats.e546325. You can also get an e-mail from the system when the job completes using the <code>-M</code> option.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qsub</span> -M training01@theacademy.com submit-stats.sh</code></pre></div>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="mail-at-different-job-status"><span class="glyphicon glyphicon-pencil"></span>Mail at different job status</h2>
+</div>
+<div class="panel-body">
+<p>Each job goes through several status changes during it’s life cycle. If a queue job is cancelled before starting the jod is said to be ‘aborted’ or failed. Of course, a status change occurs changing from being queued to excuting. And another status change occurs when the job completes execution (whether successful or not). You can control when the system sends you an e-mail using the <code>-m</code> option.</p>
+<ol style="list-style-type: decimal">
+<li>Submit a job with <code>-m be -M youremail@server.com</code> options. What kind of e-mails did you recieve from the system?</li>
+<li>Submit a job with <code>-m n -M youremail@server.com</code> options. Did you recieve any e-mails from the system about this job?</li>
+</ol>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="controlling-the-name-of-output-files"><span class="glyphicon glyphicon-pencil"></span>Controlling the name of output files</h2>
+</div>
+<div class="panel-body">
+<p>The output of <code>submit-stats.sh</code> produced two files, a <code>.e</code> file and a <code>.o</code> file. The name template for these files was the jobName.ejobID or jobName.ojobID. You can control the names of these output files.</p>
+<ol style="list-style-type: decimal">
+<li>Submit a job with <code>-o statOutput.txt</code> option. What where the names of the output files?</li>
+<li>Submit a job with <code>-e statError.txt</code> option. What where the names of the output files?</li>
+<li>Submit a job with <code>-j oe</code> option. How many files where produced? What where their names?</li>
+<li>Can you submit a job with a single output file produced and named singleStream.txt?</li>
+<li>How do you eliminate output files all together? Hint: <code>/dev/null</code> can be used in place of output files to throw away output.</li>
+</ol>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="canceling-a-job"><span class="glyphicon glyphicon-pencil"></span>Canceling a job</h2>
+</div>
+<div class="panel-body">
+<p>The <code>sleep</code> command makes a job wait for the number of seconds specified.<br />
+For instance, <code>sleep 3600</code> would make a shell wait 1 hour before continuing.<br />
+Write a submit script that sleeps for 2 hours. Submit the job, and verify that it’s running using the <code>showq</code> command.</p>
+<ol style="list-style-type: decimal">
+<li>Terminate the job using <code>canceljob jobID</code> command. Where any output files produced?</li>
+<li>Re-submit the job but now with <code>-m n -M youremail@server.com</code>. When you cancelled the job, did you get any e-mails?</li>
+<li>Can you submit the job, and cancel it without getting any e-mails? Hint: trying using nomail@hpc.wvu.edu as your e-mail address.</li>
+</ol>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2 id="placing-qsub-options-inside-a-submit-script"><span class="glyphicon glyphicon-pencil"></span>Placing qsub options inside a submit script</h2>
+</div>
+<div class="panel-body">
+<p>Another way your can specify qsub options is by placing them inside the submit script. Any option that starts with <code>#PBS</code> and appears before commands will be accepted by the system. Re-submit your sleep command script with <code>#PBS -M youremail@server.com</code> placed in the file <em>after</em> your sleep command. Cancel the job, did you get an e-mail? Now put the <code>#PBS -M  youremail@server.com</code> <em>before</em> the sleep command. Re-submit and cancel the job. Did you recieve an e-mail? Now re-submit the job keeping the <code>-M</code> in the submit script. But place <code>-M noemail@hpc.wvu.edu</code> on the command-line in your qsub command. Did you receive an e-mail? Use <code>checkjob</code> to verify which e-mail address is attributed to the job.</p>
+</div>
+</section>
+        </div>
+      </div>
+      </article>
+      <div class="footer">
+      		We were aided in this work by the training and other support offered by 
+      		the <a href="http://software-carpentry.org">Software Carpentry</a> 
+      		project.
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+    <script 
+    src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+  </body>
+</html>
