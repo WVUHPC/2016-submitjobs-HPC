@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
-	<title></title>
+	<title>Submitting jobs to HPC systems</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
@@ -25,8 +25,23 @@
       <article>
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
-                    <h1 class="title"></h1>
-          
+                    <a href="index.html"><h1 class="title">Submitting jobs to HPC systems</h1></a>
+          <h2 class="subtitle">Selecting queue classes</h2>
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Learn what queue classes are</li>
+<li>Learn how to specify queue classes when submitting jobs</li>
+</ul>
+</div>
+</section>
+<h2 id="what-are-queue-classes">What are queue classes</h2>
+<h2 id="specifying-queue-classes-when-submitting-jobs">Specifying queue classes when submitting jobs</h2>
+<p>Submit a job to the <code>standby</code> queue</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">qsub</span> -q standby submit-stats.sh</code></pre></div>
         </div>
       </div>
       </article>
