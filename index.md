@@ -10,6 +10,10 @@ Introduction text
 > This lesson assumes unix shell experience.  Including shell scripting basics 
 > such as variables, arguments, and executing scripts.
 
+> ## Getting Ready {.getready}
+>
+> [script-data](script-data.tar.gz)
+
 ## Topics
 
 1. [Submitting your first job](01-submit.html)

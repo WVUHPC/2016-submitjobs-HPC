@@ -12,22 +12,7 @@ minutes: 30
 > * Learn to add PBS directives to control jobs behavior
 
 
-Download our intial submit script
-
-[Download](https://wvuhpc.github.com/submitjobs-hpc/script-data.tar.gz)
-
-
-Copy data to cluster
-
-~~~ {.bash}
-$ scp script-data.tar.gz spruce.hpc.wvu.edu:.
-~~~
-
-~~~ {.bash}
-$ ssh spruce.hpc.wvu.edu
-$ tar xzvf script-data.tar.gz
-$ cd script-data
-~~~
+## Write initial PBS submit script
 
 We want to submit the do-stats.sh script to the system.  We write a second 
 script that tells the scheduler what to do:
@@ -88,7 +73,7 @@ Total job:  1
 > Here we use training01..
 
 
-After a few minutes.  Two new files will appear in the script-data directory.
+After a few minutes.  New files will appear in the script-data directory.
 
 ~~~ {.bash}
 $ ls

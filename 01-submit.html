@@ -39,13 +39,7 @@
 </ul>
 </div>
 </section>
-<p>Download our intial submit script</p>
-<p><a href="https://wvuhpc.github.com/submitjobs-hpc/script-data.tar.gz">Download</a></p>
-<p>Copy data to cluster</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">scp</span> script-data.tar.gz spruce.hpc.wvu.edu:.</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ssh</span> spruce.hpc.wvu.edu
-$ <span class="kw">tar</span> xzvf script-data.tar.gz
-$ <span class="kw">cd</span> script-data</code></pre></div>
+<h2 id="write-initial-pbs-submit-script">Write initial PBS submit script</h2>
 <p>We want to submit the do-stats.sh script to the system. We write a second script that tells the scheduler what to do:</p>
 <ol style="list-style-type: decimal">
 <li>Change to the script-data directory</li>
@@ -95,7 +89,7 @@ Total job:  1</code></pre>
 <p>Here we use training01..</p>
 </div>
 </aside>
-<p>After a few minutes. Two new files will appear in the script-data directory.</p>
+<p>After a few minutes. New files will appear in the script-data directory.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ls</span></code></pre></div>
 <pre class="output"><code>do-stats.sh     NENE01812A.txt  NENE02040B.txt        stats-NENE01751B.txt  stats-NENE02040B.txt
 goodiff         NENE01843A.txt  NENE02040Z.txt        stats-NENE01812A.txt  stats-NENE02043A.txt
